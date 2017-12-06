@@ -1,0 +1,42 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "6ed201b4d084316706fc361f722b42b8",
+    "content-hash": "889c87dff017c463b934503cea6b5dd9",
+    "packages": [
+        {
+            "name": "boooklet/tester",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/boooklet/tester.git",
+                "reference": "ef128537ef9c996e91a60c64db26935fa342336c"
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src",
+                    "src/concerns"
+                ]
+            },
+            "description": "Test library",
+            "time": "2017-10-22 14:21:20"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "boooklet/tester": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

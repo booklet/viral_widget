@@ -1,0 +1,30 @@
+{
+  "name": "boooklet/viral_form",
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "boooklet/viral_form",
+        "type": "package",
+        "source": {
+          "url": "git@github.com/boooklet/viral_form.git",
+          "type": "git",
+          "reference": "master"
+        },
+        "version": "1.0"
+      }
+    },
+    {
+      "type": "git",
+      "url": "https://github.com/boooklet/tester.git"
+    }
+  ],
+  "require": {
+    "boooklet/tester": "dev-master"
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  }
+}

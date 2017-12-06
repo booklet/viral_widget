@@ -1,0 +1,25 @@
+[
+    {
+        "name": "boooklet/tester",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/boooklet/tester.git",
+            "reference": "ef128537ef9c996e91a60c64db26935fa342336c"
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2017-10-22 14:21:20",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src",
+                "src/concerns"
+            ]
+        },
+        "description": "Test library"
+    }
+]
