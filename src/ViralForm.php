@@ -63,7 +63,7 @@ class ViralForm
 
     private function recommendationForm($params)
     {
-        $member_data = (new ViralFormRequest())->getMemberData();
+        $member_data = (new ViralFormRequest())->getMemberData($this->recommendation_code);
         if ($member_data) {
             return (new ViralFormHtml($params))->recommendationForm($member_data);
         } else {
