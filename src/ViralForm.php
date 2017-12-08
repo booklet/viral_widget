@@ -117,7 +117,7 @@ class ViralForm
 
     private function isTestMode()
     {
-        return TEST_ENV == true;
+        return defined('TEST') and TEST_ENV == true;
     }
 
     private function testMemberData()
