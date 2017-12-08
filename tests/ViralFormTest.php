@@ -7,8 +7,7 @@ class ViralFormTest extends TesterCase
         $get = [];
         $cookie = [];
 
-        $viral = new ViralForm([
-            'viral_campaign_hash_id' => 'c51a44ce318175d3c68214f6d5111111',
+        $viral = new ViralForm('c51a44ce318175d3c68214f6d5111111', [
             'routing_match' => $match,
             'get' => $get,
             'cookie' => $cookie,
@@ -28,8 +27,7 @@ class ViralFormTest extends TesterCase
         $get = [];
         $cookie = [];
 
-        $viral = new ViralForm([
-            'viral_campaign_hash_id' => 'c51a44ce318175d3c68214f6d5111111',
+        $viral = new ViralForm('c51a44ce318175d3c68214f6d5111111', [
             'routing_match' => $match,
             'get' => $get,
             'cookie' => $cookie,
@@ -43,19 +41,31 @@ class ViralFormTest extends TesterCase
         Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
     }
 
-
     public function testGetFormWhenUserRegistredByGetParam()
     {
         $match['ref_id'] = 'abc123_registration';
         $get['ref_coupon'] = 'xyz123_recommendation';
         $cookie = [];
 
-        $viral = new ViralForm([
-            'viral_campaign_hash_id' => 'c51a44ce318175d3c68214f6d5111111',
+        $viral = new ViralForm('c51a44ce318175d3c68214f6d5111111', [
             'routing_match' => $match,
             'get' => $get,
             'cookie' => $cookie,
         ]);
+
+        $data = $viral->getParams();
+        $expect = [
+            'viral_campaign_hash_id' => 'c51a44ce318175d3c68214f6d5111111',
+            'routing_match' => ['ref_id' => 'abc123_registration'],
+            'get' => ['ref_coupon' => 'xyz123_recommendation'],
+            'cookie' => [],
+            'cookie_ref_id_name' => 'c51a44_ref_id',
+            'cookie_ref_coupon_name' => 'c51a44_ref_coupon',
+            'registration_code' => 'abc123_registration',
+            'recommendation_code' => 'xyz123_recommendation',
+        ];
+        Assert::expect($data)->to_equal($expect);
+
         $html = $viral->form();
 
         Assert::expect($html)->to_include_string('Poleceń do tej pory: <span class="points">0</span>.');
@@ -68,12 +78,25 @@ class ViralFormTest extends TesterCase
         $get = [];
         $cookie['c51a44_ref_coupon'] = 'xyz123_recommendation';
 
-        $viral = new ViralForm([
-            'viral_campaign_hash_id' => 'c51a44ce318175d3c68214f6d5111111',
+        $viral = new ViralForm('c51a44ce318175d3c68214f6d5111111', [
             'routing_match' => $match,
             'get' => $get,
             'cookie' => $cookie,
         ]);
+
+        $data = $viral->getParams();
+        $expect = [
+            'viral_campaign_hash_id' => 'c51a44ce318175d3c68214f6d5111111',
+            'routing_match' => ['ref_id' => 'abc123_registration'],
+            'get' => [],
+            'cookie' => ['c51a44_ref_coupon' => 'xyz123_recommendation'],
+            'cookie_ref_id_name' => 'c51a44_ref_id',
+            'cookie_ref_coupon_name' => 'c51a44_ref_coupon',
+            'registration_code' => 'abc123_registration',
+            'recommendation_code' => 'xyz123_recommendation',
+        ];
+        Assert::expect($data)->to_equal($expect);
+
         $html = $viral->form();
 
         Assert::expect($html)->to_include_string('Poleceń do tej pory: <span class="points">0</span>.');

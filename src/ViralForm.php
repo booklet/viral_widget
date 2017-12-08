@@ -1,136 +1,122 @@
 <?php
 class ViralForm
 {
+    const TIME_KEEP_COOKIES = 86400 * 30; // 86400 = 1 day
+    const REGISTRATION_KEY = 'ref_id'; // use to form and cookies keys
+    const RECOMMENDATION_KEY = 'ref_coupon'; // use to form and cookies keys
+
     private $viral_campaign_hash_id;
     private $routing_match;
     private $get;
     private $cookie;
-
-    // dwa ref
-    // jeden z ktorego uzytkownik sie zapisal
-    // drugi jego wlasny do polecen
+    private $cookie_ref_id_name;
+    private $cookie_ref_coupon_name;
     private $registration_code;
     private $recommendation_code;
 
-    public function __construct(array $params)
+    public function __construct(string $viral_campaign_hash_id, array $params)
     {
-        $this->viral_campaign_hash_id = $params['viral_campaign_hash_id'];
-        $this->routing_match = $params['routing_match'];
-        $this->get = $params['get'];
-        $this->cookie = $params['cookie'];
+        $this->viral_campaign_hash_id = $viral_campaign_hash_id;
+        $this->routing_match = $params['routing_match'] ?? [];
+        $this->get = $params['get'] ?? [];
+        $this->cookie = $params['cookie'] ?? [];
 
-        // registration_code
-        $this->registration_code = $this->routing_match['ref_id'] ?? $this->cookie[substr($this->viral_campaign_hash_id, 0, 6) . '_ref_id'] ?? null;
-        // set cookie if not exists
-        if ($this->registration_code and !$this->isTestMode()) {
-            setcookie(substr($this->viral_campaign_hash_id, 0, 6) . '_ref_id', $this->registration_code, time() + (86400 * 30), '/'); // 86400 = 1 day
-        }
-
-        // $recommendation_code_cookie
-        $recommendation_code_get = $this->get['ref_coupon'] ?? null;
-        $recommendation_code_cookie = $this->cookie[substr($this->viral_campaign_hash_id, 0, 6) . '_ref_coupon'] ?? null;
-        $this->recommendation_code = $recommendation_code_get ?? $recommendation_code_cookie ?? null;
-        // set cookie if not exists
-        if ($this->recommendation_code and !$this->isTestMode()) {
-            setcookie(substr($this->viral_campaign_hash_id, 0, 6) . '_ref_coupon', $this->recommendation_code, time() + (86400 * 30), '/'); // 86400 = 1 day
-        }
+        $this->setCookiesKeys();
+        $this->setCodesValues();
+        $this->setCookies();
     }
 
     public function form(array $params = [])
     {
-        if ($this->isRegisteredUser()) {
+        if ($this->isSigningUpMember()) {
             return $this->recommendationForm($params);
         } else {
             return $this->registrationForm($params);
         }
     }
 
+    private function setCookiesKeys()
+    {
+        $pefix = $this->getKeysPrefix();
+        $this->cookie_ref_id_name = $pefix . '_' . self::REGISTRATION_KEY;
+        $this->cookie_ref_coupon_name = $pefix . '_' . self::RECOMMENDATION_KEY;
+    }
+
+    private function setCodesValues()
+    {
+        $this->registration_code = $this->routing_match[self::REGISTRATION_KEY] ?? $this->cookie[$this->cookie_ref_id_name] ?? null;
+        $this->recommendation_code = $this->get[self::RECOMMENDATION_KEY] ?? $this->cookie[$this->cookie_ref_coupon_name] ?? null;
+    }
+
+    private function setCookies()
+    {
+        // Utwórz lub aktualizuj cookies, tylko jeśli wartość się zmieniła
+        // aby nie odświeżać daty wygaśnięcia cookies za każdym wyświetleniem.
+        if ($this->registration_code and !self::isTestMode()) {
+            $this->setCookieWhenValueChange($this->cookie_ref_id_name, $this->registration_code, true);
+        }
+
+        if ($this->recommendation_code and !self::isTestMode()) {
+            $this->setCookieWhenValueChange($this->cookie_ref_coupon_name, $this->recommendation_code);
+        }
+    }
+
     private function recommendationForm($params)
     {
-        // $params
-        // lead-text  {{pinkty}}
-
-        $data = $this->requestUserData();
-        if ($data) {
-            return '
-            <div id="viral-recommendation">
-              <div class="lead-text">
-                Poleceń do tej pory: <span class="points">' . $data['points'] . '</span>.
-              </div>
-              <div class="recommendation-link">
-                <input type="text" value="' . $data['source_url'] . '/' . $data['reference_coupon'] . '">
-              </div>
-              <div class="recommendation-buttons-text">
-                Kliknij, aby udostępnić.
-              </div>
-              <div class="recommendation-buttons">
-                <a href="#" class="facebook">Facebook</a>
-              </div>
-            </div>';
+        $member_data = (new ViralFormRequest())->getMemberData();
+        if ($member_data) {
+            return (new ViralFormHtml($params))->recommendationForm($member_data);
         } else {
-            // no data
             return $this->registrationForm($params);
         }
     }
 
-    private function requestUserData()
+    private function registrationForm($params)
     {
-        if ($this->isTestMode()) {
-            return $this->testMemberData();
-        }
+        $data = [
+            'viral_campaign_hash_id' => $this->viral_campaign_hash_id,
+            'registration_code' => $this->registration_code,
+        ];
 
-        try {
-            $data = @file_get_contents('http://api.booklet.dev/v1/viral_member_data/' . $this->recommendation_code);
-            if ($data !== false) {
-                $data = json_decode($data);
-                return (array) $data->data[0]->attributes;
-            }
-        } catch (Throwable $t) {
-
-        }
-
-        return null;
+        return (new ViralFormHtml($params))->registrationForm($data);
     }
 
-    private function registrationForm()
+    private function setCookieWhenValueChange($name, $value)
     {
-        return '
-        <form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/' . $this->viral_campaign_hash_id . '" method="post">
-          <input type="hidden" name="member[ref_id]" value="' . $this->registration_code . '">
-          <div class="form-group form-group-email">
-            <label for="viral-member-email">E-mail:</label>
-            <input type="email" name="member[email]" class="form-control" id="viral-member-email">
-          </div>
-          <div class="form-group form-group-name">
-            <label for="viral-member-name">Imie:</label>
-            <input type="text" name="member[name]" class="form-control" id="viral-member-name">
-          </div>
-          <button type="submit" class="btn btn-primary">Zapisz się</button>
-        </form>';
+        if (isset($this->cookie[$name]) and $this->cookie[$name] == $value) {
+            return;
+        }
+
+        setcookie($name, $value, time() + self::TIME_KEEP_COOKIES, '/');
     }
 
-    private function isRegisteredUser()
+    private function getKeysPrefix()
+    {
+        return substr($this->viral_campaign_hash_id, 0, 6);
+    }
+
+    private function isSigningUpMember()
     {
         return $this->recommendation_code;
     }
 
-    private function isTestMode()
+    public static function isTestMode()
     {
         return defined('IS_TEST_ENV') and IS_TEST_ENV == true;
     }
 
-    private function testMemberData()
+    // For tests
+    public function getParams()
     {
         return [
-            'source_url' => 'http://booklet.dev/viral',
-            'target_url' => 'http://booklet.dev/viral-dziekujemy',
-            'email' => 'adam@test.com',
-            'name' => 'Adam',
-            'status' => 'confirmed',
-            'points' => 0,
-            'reference_coupon' => 'xyz123_recommendation',
+            'viral_campaign_hash_id' => $this->viral_campaign_hash_id,
+            'routing_match' => $this->routing_match,
+            'get' => $this->get,
+            'cookie' => $this->cookie,
+            'cookie_ref_id_name' => $this->cookie_ref_id_name,
+            'cookie_ref_coupon_name' => $this->cookie_ref_coupon_name,
+            'registration_code' => $this->registration_code,
+            'recommendation_code' => $this->recommendation_code,
         ];
     }
-
-
 }

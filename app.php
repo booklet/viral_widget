@@ -10,6 +10,7 @@ spl_autoload_register(function ($class) {
     }
 });
 require_once 'vendor/autoload.php';
+require_once 'tests/factories/MemberDataFactory.php';
 
 echo "\nRun all tests\n";
 $time_start = microtime(true);
