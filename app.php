@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-define('TEST_ENV', true);
+define('IS_TEST_ENV', true);
 
 // AUTOLOADER BASIC
 // ==============================================================================
