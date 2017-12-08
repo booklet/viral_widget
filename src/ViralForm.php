@@ -24,7 +24,11 @@ class ViralForm
         $this->registration_code = $this->routing_match['ref_id'] ?? $this->cookie[substr($this->viral_campaign_hash_id, 0, 6) . '_ref_id'] ?? null;
         // set cookie if not exists
         if ($this->registration_code) {
-            // setcookie(substr($this->viral_campaign_hash_id, 0, 6) . '_ref_id', $this->registration_code, time() + (86400 * 30), '/'); // 86400 = 1 day
+
+            if (!$this->isTestMode()) {
+                setcookie(substr($this->viral_campaign_hash_id, 0, 6) . '_ref_id', $this->registration_code, time() + (86400 * 30), '/'); // 86400 = 1 day
+            }
+
         }
 
         // $recommendation_code_cookie
@@ -33,7 +37,11 @@ class ViralForm
         $this->recommendation_code = $recommendation_code_get ?? $recommendation_code_cookie ?? null;
         // set cookie if not exists
         if ($this->recommendation_code) {
-            // setcookie(substr($this->viral_campaign_hash_id, 0, 6) . '_ref_id', $this->registration_code, time() + (86400 * 30), '/'); // 86400 = 1 day
+
+          if (!$this->isTestMode()) {
+              setcookie(substr($this->viral_campaign_hash_id, 0, 6) . '_ref_coupon', $this->registration_code, time() + (86400 * 30), '/'); // 86400 = 1 day
+          }
+
         }
     }
 
@@ -117,7 +125,7 @@ class ViralForm
 
     private function isTestMode()
     {
-        return defined('TEST') and TEST_ENV == true;
+        return defined('TEST_ENV') and TEST_ENV == true;
     }
 
     private function testMemberData()
