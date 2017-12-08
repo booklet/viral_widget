@@ -51,45 +51,47 @@ class ViralForm
         // $params
         // lead-text  {{pinkty}}
 
-        // pobranie danych o uzytkowniku na podstawie $this->recommendation_code
-
         $data = $this->requestUserData();
-
-        return '
-        <div id="viral-recommendation">
-          <div class="lead-text">
-            Poleceń do tej pory: <span class="points">' . $data['points'] . '</span>.
-          </div>
-          <div class="recommendation-link">
-            <input type="text" value="' . $data['source_url'] . '/' . $data['reference_coupon'] . '">
-          </div>
-          <div class="recommendation-buttons-text">
-            Kliknij, aby udostępnić.
-          </div>
-          <div class="recommendation-buttons">
-            <a href="#" class="facebook">Facebook</a>
-          </div>
-        </div>';
+        if ($data) {
+            return '
+            <div id="viral-recommendation">
+              <div class="lead-text">
+                Poleceń do tej pory: <span class="points">' . $data['points'] . '</span>.
+              </div>
+              <div class="recommendation-link">
+                <input type="text" value="' . $data['source_url'] . '/' . $data['reference_coupon'] . '">
+              </div>
+              <div class="recommendation-buttons-text">
+                Kliknij, aby udostępnić.
+              </div>
+              <div class="recommendation-buttons">
+                <a href="#" class="facebook">Facebook</a>
+              </div>
+            </div>';
+        } else {
+            // no data
+            return $this->registrationForm($params);
+        }
     }
-
 
     private function requestUserData()
     {
-        // pobranie danych o uzytkowniku na podstawie $this->recommendation_code
+        if ($this->isTestMode()) {
+            return $this->testMemberData();
+        }
 
-        $data = [
-            'source_url' => 'http://booklet.dev/viral',
-            'target_url' => 'http://booklet.dev/viral-dziekujemy',
-            'email' => 'adam@test.com',
-            'name' => 'Adam',
-            'status' => 'confirmed',
-            'points' => 0,
-            'reference_coupon' => 'xyz123_recommendation',
-        ];
+        try {
+            $data = @file_get_contents('http://api.booklet.dev/v1/viral_member_data/' . $this->recommendation_code);
+            if ($data !== false) {
+                $data = json_decode($data);
+                return (array) $data->data[0]->attributes;
+            }
+        } catch (Throwable $t) {
 
-        return $data;
+        }
+
+        return null;
     }
-
 
     private function registrationForm()
     {
@@ -108,10 +110,28 @@ class ViralForm
         </form>';
     }
 
-
     private function isRegisteredUser()
     {
         return $this->recommendation_code;
     }
+
+    private function isTestMode()
+    {
+        return TEST_ENV == true;
+    }
+
+    private function testMemberData()
+    {
+        return [
+            'source_url' => 'http://booklet.dev/viral',
+            'target_url' => 'http://booklet.dev/viral-dziekujemy',
+            'email' => 'adam@test.com',
+            'name' => 'Adam',
+            'status' => 'confirmed',
+            'points' => 0,
+            'reference_coupon' => 'xyz123_recommendation',
+        ];
+    }
+
 
 }

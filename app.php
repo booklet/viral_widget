@@ -1,5 +1,7 @@
 #!/usr/bin/php
 <?php
+define('TEST_ENV', true);
+
 // AUTOLOADER BASIC
 // ==============================================================================
 spl_autoload_register(function ($class) {
