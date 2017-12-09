@@ -1,17 +1,17 @@
 <?php
-class ViralFormHtmlTest extends TesterCase
+class ViralWidgetHtmlTest extends TesterCase
 {
 
 
     public function testRegistrationForm()
     {
-        $params = []; // dane z ->form($params)
+        $params = []; // dane z ->widget($params)
         $data = [
             'viral_campaign_hash_id' => 'abcdefghijklmnopqrst',
-            'registration_code' => null,
+            'registration_code_value' => null,
         ];
 
-        $html = (new ViralFormHtml($params))->registrationForm($data);
+        $html = (new ViralWidgetHtml($params))->registrationForm($data);
 
         Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/abcdefghijklmnopqrst" method="post">');
         Assert::expect($html)->to_include_string('<input type="hidden" name="member[ref_id]" value="">');
@@ -21,12 +21,12 @@ class ViralFormHtmlTest extends TesterCase
     }
 
 
-    public function testRecommendationForm()
+    public function testRecommendationWidget()
     {
-        $params = []; // dane z ->form($params)
+        $params = []; // dane z ->widget($params)
         $data = MemberDataFactory::testMemberData();  // dane z klasy
 
-        $html = (new ViralFormHtml($params))->recommendationForm($data);
+        $html = (new ViralWidgetHtml($params))->recommendationWidget($data);
 
         Assert::expect($html)->to_include_string('Poleceń do tej pory: <span class="points">0</span>.');
         Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral/xyz123_recommendation">');
