@@ -2,27 +2,29 @@
 class ViralWidget
 {
     const TIME_KEEP_COOKIES = 86400 * 30; // 86400 = 1 day
-    const REGISTRATION_KEY = 'ref_id'; // for registration  code
-    const RECOMMENDATION_KEY = 'ref_coupon'; // for recommendation code
+    const REGISTRATION_KEY = 'registration_code'; // for registration code
+    const RECOMMENDATION_KEY = 'recommendation_code'; // for recommendation code
 
     private $viral_campaign_hash_id;
     private $routing_match;
     private $get;
-    private $cookie;
+    private $cookies;
     private $cookie_registration_key_name;
     private $cookie_recommendation_key_name;
     private $registration_code_value;
     private $recommendation_code_value;
+    private $cookies_to_set;
 
     public function __construct(string $viral_campaign_hash_id, array $params = [])
     {
         $this->viral_campaign_hash_id = $viral_campaign_hash_id;
         $this->routing_match = $params['routing_match'] ?? [];
         $this->get = $params['get'] ?? [];
-        $this->cookie = $params['cookie'] ?? [];
+        $this->cookies = $params['cookie'] ?? [];
 
         $this->setCookiesKeys();
         $this->setCodesValues();
+        $this->generateCookiesToSet();
         $this->setCookies();
     }
 
@@ -45,20 +47,34 @@ class ViralWidget
 
     private function setCodesValues()
     {
-        $this->registration_code_value = $this->routing_match[self::REGISTRATION_KEY] ?? $this->cookie[$this->cookie_registration_key_name] ?? null;
-        $this->recommendation_code_value = $this->get[self::RECOMMENDATION_KEY] ?? $this->cookie[$this->cookie_recommendation_key_name] ?? null;
+        $this->registration_code_value = $this->routing_match[self::REGISTRATION_KEY] ?? $this->cookies[$this->cookie_registration_key_name] ?? null;
+        $this->recommendation_code_value = $this->get[self::RECOMMENDATION_KEY] ?? $this->cookies[$this->cookie_recommendation_key_name] ?? null;
+    }
+
+    private function generateCookiesToSet()
+    {
+        $this->cookies_to_set = [];
+        // Create or update cookies only if the value has changed
+        // not to refresh the expiration date of cookies for each widget display.
+        if ($this->registration_code_value) {
+            $this->cookies_to_set[] = [
+                'name' => $this->cookie_registration_key_name,
+                'value' => $this->registration_code_value,
+            ];
+        }
+
+        if ($this->recommendation_code_value) {
+            $this->cookies_to_set[] = [
+                'name' => $this->cookie_recommendation_key_name,
+                'value' => $this->recommendation_code_value,
+            ];
+        }
     }
 
     private function setCookies()
     {
-        // Create or update cookies only if the value has changed
-        // not to refresh the expiration date of cookies for each widget display.
-        if ($this->registration_code_value and !self::isTestMode()) {
-            $this->setCookieWhenValueChange($this->cookie_registration_key_name, $this->registration_code_value);
-        }
-
-        if ($this->recommendation_code_value and !self::isTestMode()) {
-            $this->setCookieWhenValueChange($this->cookie_recommendation_key_name, $this->recommendation_code_value);
+        foreach ($this->cookies_to_set as $cookie) {
+            $this->setCookieWhenValueChange($cookie['name'], $cookie['value']);
         }
     }
 
@@ -84,7 +100,7 @@ class ViralWidget
 
     private function setCookieWhenValueChange($name, $value)
     {
-        if (isset($this->cookie[$name]) and $this->cookie[$name] == $value) {
+        if ($this->isCookieExistsWithEqualValue($name, $value) or self::isTestMode()) {
             return;
         }
 
@@ -101,6 +117,11 @@ class ViralWidget
         return $this->recommendation_code_value;
     }
 
+    private function isCookieExistsWithEqualValue($name, $value)
+    {
+        return isset($this->cookies[$name]) and $this->cookies[$name] == $value;
+    }
+
     public static function isTestMode()
     {
         return defined('IS_TEST_ENV') and IS_TEST_ENV == true;
@@ -113,11 +134,12 @@ class ViralWidget
             'viral_campaign_hash_id' => $this->viral_campaign_hash_id,
             'routing_match' => $this->routing_match,
             'get' => $this->get,
-            'cookie' => $this->cookie,
+            'cookies' => $this->cookies,
             'cookie_registration_key_name' => $this->cookie_registration_key_name,
             'cookie_recommendation_key_name' => $this->cookie_recommendation_key_name,
             'registration_code_value' => $this->registration_code_value,
             'recommendation_code_value' => $this->recommendation_code_value,
+            'cookies_to_set' => $this->cookies_to_set,
         ];
     }
 }

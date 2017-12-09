@@ -12,7 +12,7 @@ class ViralWidgetHtml
     {
         return '
         <form id="viral-form" action="' . ViralWidgetApi::getApiUrl() . 'viral_signing_up/' . $data['viral_campaign_hash_id'] . '" method="post">
-          <input type="hidden" name="member[ref_id]" value="' . $data['registration_code_value'] . '">
+          <input type="hidden" name="member[registration_code]" value="' . $data['registration_code_value'] . '">
           <div class="form-group form-group-email">
             <label for="viral-member-email">E-mail:</label>
             <input type="email" name="member[email]" class="form-control" id="viral-member-email">
