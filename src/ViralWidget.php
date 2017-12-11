@@ -30,6 +30,13 @@ class ViralWidget
 
     public function widget(array $params = [])
     {
+        // Preview mode to display all forms and alerts to easy css style
+        if (isset($params['preview_mode'])) {
+            $h = $this->recommendationWidget($params);
+            $h .= $this->registrationForm($params);
+            return $h;
+        }
+
         if ($this->isSigningUpMember()) {
             return $this->recommendationWidget($params);
         } else {

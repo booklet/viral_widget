@@ -41,8 +41,6 @@ class ViralWidgetTest extends TesterCase
         Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
     }
 
-
-
     public function testGetWidgetWhenFirstVisits()
     {
 
@@ -185,5 +183,26 @@ class ViralWidgetTest extends TesterCase
 
         Assert::expect($html)->to_include_string('Poleceń do tej pory: <span class="points">0</span>.');
         Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral/xyz123_recommendation">');
+    }
+
+    public function testPreviewMode()
+    {
+        $match = [];
+        $get = [];
+        $cookie = [];
+
+        $viral = new ViralWidget('c51a44ce318175d3c68214f6d5111111', [
+            'routing_match' => $match,
+            'get' => $get,
+            'cookie' => $cookie,
+        ]);
+        $html = $viral->widget(['preview_mode' => true]);
+
+        Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/CusT0mH4sH" method="post">');
+        Assert::expect($html)->to_include_string('<input type="email" name="member[email]" class="form-control" id="viral-member-email">');
+        Assert::expect($html)->to_include_string('<input type="text" name="member[name]" class="form-control" id="viral-member-name">');
+        Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
+        Assert::expect($html)->to_include_string('<div class="viral-alert">Podany e-mail jest niepoprawny.</div>');
+        Assert::expect($html)->to_include_string('<div class="viral-info">Dziękujemy, Twoje konto zostało aktywowane.</div>');
     }
 }

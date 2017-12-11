@@ -12,6 +12,11 @@ class ViralWidgetHtml
 
     public function registrationForm($data)
     {
+        if ($this->isPreviewMode()) {
+            $data['viral_campaign_hash_id'] = 'CusT0mH4sH';
+            $data['registration_code_value'] = 'xyz123';
+        }
+
         $html = $this->generateInformationAlerts();
 
         $html .= '
@@ -33,6 +38,11 @@ class ViralWidgetHtml
 
     public function recommendationWidget($data)
     {
+        if ($this->isPreviewMode()) {
+            $data['source_url'] = 'http://booklet.pl/viral';
+            $data['recommendation_code'] = 'abc123';
+        }
+
         $html = $this->generateInformationAlerts();
 
         $html .= '
@@ -65,28 +75,33 @@ class ViralWidgetHtml
         $html = '';
 
         $email_error = $this->get['email'][0] ?? '';
-        if ($email_error == 'jest już wykorzystany w tej kampanii') {
+        if ($email_error == 'jest już wykorzystany w tej kampanii' or $this->isPreviewMode()) {
             $html .= '<div class="viral-alert">Ten email został już wykorzystany w tej kampanii.</div>';
         }
 
-        if ($email_error == 'is required.' or $email_error == 'email is not valid.') {
+        if ($email_error == 'is required.' or $email_error == 'email is not valid.' or $this->isPreviewMode()) {
             $html .= '<div class="viral-alert">Podany e-mail jest niepoprawny.</div>';
         }
 
         $show = $this->get['show'] ?? '';
-        if ($show == 'activation_successfully') {
+        if ($show == 'activation_successfully' or $this->isPreviewMode()) {
             $html .= '<div class="viral-info">Dziękujemy, Twoje konto zostało aktywowane.</div>';
         }
 
-        if ($show == 'activation_error') {
+        if ($show == 'activation_error' or $this->isPreviewMode()) {
             $html .= '<div class="viral-error">Aktywacja nie powiodła się.</div>';
         }
 
         $campaign = $this->get['campaign'] ?? '';
-        if ($campaign == 'suspended') {
+        if ($campaign == 'suspended' or $this->isPreviewMode()) {
             $html .= '<div class="viral-alert">Kampanie została zawieszona. Rejestracja nie jest aktualnie możliwa.</div>';
         }
 
         return $html;
+    }
+
+    private function isPreviewMode()
+    {
+       return isset($this->params['preview_mode']);
     }
 }
