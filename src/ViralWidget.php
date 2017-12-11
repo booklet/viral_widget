@@ -37,6 +37,11 @@ class ViralWidget
             return $h;
         }
 
+        if (isset($this->get['activate'])) {
+            header('Location: ' . ViralWidgetApi::getApiUrl() . 'viral_member_activation/' . $this->get['activate']);
+            exit;
+        }
+
         if ($this->isSigningUpMember()) {
             return $this->recommendationWidget($params);
         } else {
