@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6ed201b4d084316706fc361f722b42b8",
-    "content-hash": "889c87dff017c463b934503cea6b5dd9",
+    "hash": "d9876df5fd4d7966c8a1076e33df72f4",
+    "content-hash": "e8c5d3234afcc16bfd728621bdf33e79",
     "packages": [
         {
             "name": "boooklet/tester",

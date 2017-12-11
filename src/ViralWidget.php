@@ -82,7 +82,7 @@ class ViralWidget
     {
         $member_data = (new ViralWidgetRequest())->getMemberData($this->recommendation_code_value);
         if ($member_data) {
-            return (new ViralWidgetHtml($params))->recommendationWidget($member_data);
+            return (new ViralWidgetHtml($params, $this->get))->recommendationWidget($member_data);
         } else {
             return $this->registrationForm($params);
         }
@@ -95,7 +95,7 @@ class ViralWidget
             'registration_code_value' => $this->registration_code_value,
         ];
 
-        return (new ViralWidgetHtml($params))->registrationForm($data);
+        return (new ViralWidgetHtml($params, $this->get))->registrationForm($data);
     }
 
     private function setCookieWhenValueChange($name, $value)
