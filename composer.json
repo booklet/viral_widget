@@ -1,13 +1,13 @@
 {
-  "name": "boooklet/viral_form",
+  "name": "boooklet/viral_widget",
   "repositories": [
     {
       "type": "package",
       "package": {
-        "name": "boooklet/viral_form",
+        "name": "boooklet/viral_widget",
         "type": "package",
         "source": {
-          "url": "git@github.com/boooklet/viral_form.git",
+          "url": "git@github.com/boooklet/viral_widget.git",
           "type": "git",
           "reference": "master"
         },
