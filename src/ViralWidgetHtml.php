@@ -39,7 +39,7 @@ class ViralWidgetHtml
         <div id="viral-recommendation">
           <div class="lead-text">' . $this->getLeadText($data) .'</div>
           <div class="recommendation-link">
-            <input type="text" value="' . $data['source_url'] . '/' . $data['reference_coupon'] . '">
+            <input type="text" value="' . $data['source_url'] . '/' . $data['recommendation_code'] . '">
           </div>
           <div class="recommendation-buttons-text">
             Kliknij, aby udostępnić.

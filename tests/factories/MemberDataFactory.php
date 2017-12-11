@@ -10,7 +10,7 @@ class MemberDataFactory
             'name' => 'Adam',
             'status' => 'confirmed',
             'points' => 0,
-            'reference_coupon' => 'xyz123_recommendation',
+            'recommendation_code' => 'xyz123_recommendation',
         ];
     }
 }
