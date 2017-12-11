@@ -49,6 +49,11 @@ class ViralWidget
         }
     }
 
+    public function isSigningUpMember()
+    {
+        return $this->recommendation_code_value;
+    }
+
     private function setCookiesKeys()
     {
         // Need to use cookies names prefix in case when two viral widgets in this same domain
@@ -122,11 +127,6 @@ class ViralWidget
     private function getKeysPrefix()
     {
         return substr($this->viral_campaign_hash_id, 0, 6);
-    }
-
-    private function isSigningUpMember()
-    {
-        return $this->recommendation_code_value;
     }
 
     private function isCookieExistsWithEqualValue($name, $value)
