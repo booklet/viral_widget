@@ -1,4 +1,6 @@
 <?php
+// Opis modułu dostępny w API: app/modules/viral/docs/Viral.md
+
 class ViralWidget
 {
     const TIME_KEEP_COOKIES = 86400 * 30; // 86400 = 1 day
