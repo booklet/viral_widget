@@ -69,7 +69,7 @@ class ViralWidgetHtml
             $html .= '<div class="viral-alert">Ten email został już wykorzystany w tej kampanii.</div>';
         }
 
-        if ($email_error == 'is required' or $email_error == 'email is not valid') {
+        if ($email_error == 'is required.' or $email_error == 'email is not valid.') {
             $html .= '<div class="viral-alert">Podany e-mail jest niepoprawny.</div>';
         }
 

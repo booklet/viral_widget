@@ -18,7 +18,6 @@ class ViralWidgetHtmlTest extends TesterCase
         Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
     }
 
-
     public function testRecommendationWidget()
     {
         $params = []; // dane z ->widget($params)
@@ -60,8 +59,8 @@ class ViralWidgetHtmlTest extends TesterCase
         ];
         $get = ['email' =>
             [
-                'is required',
-                'email is not valid',
+                'is required.',
+                'email is not valid.',
             ]
         ];
 
@@ -70,7 +69,6 @@ class ViralWidgetHtmlTest extends TesterCase
         Assert::expect($html)->to_include_string('<div class="viral-alert">Podany e-mail jest niepoprawny.</div>');
         Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/abcdefghijklmnopqrst" method="post">');
     }
-
 
     // ?show=activation_successfully
     public function testInformationAlertsActivationSuccessfully()
