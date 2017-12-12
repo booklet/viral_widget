@@ -122,4 +122,35 @@ class ViralWidgetHtmlTest extends TesterCase
         Assert::expect($html)->to_include_string('<div class="viral-alert">Kampanie została zawieszona. Rejestracja nie jest aktualnie możliwa.</div>');
         Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/abcdefghijklmnopqrst" method="post">');
     }
+
+    public function testFacebookShareButton()
+    {
+        $params = [];
+        $data = MemberDataFactory::testMemberData();
+        $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
+
+        Assert::expect($html)->to_include_string('<a class="facebook-button" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation"');
+        Assert::expect($html)->to_include_string('onclick="window.open(\'https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation\',\'Udostępnij na Facebooku\',\'width=600,height=400\'); return false;"');
+        Assert::expect($html)->to_include_string('Udostępnij na Facebook');
+    }
+
+    public function testTwitterShareButton()
+    {
+        $params = [];
+        $data = MemberDataFactory::testMemberData();
+        $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
+
+        Assert::expect($html)->to_include_string('<a class="twitter-button" href="https://twitter.com/home?status=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation"');
+        Assert::expect($html)->to_include_string('onclick="window.open(\'https://twitter.com/home?status=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation\',\'Udostępnij na Twitter\',\'width=600,height=400\'); return false;"');
+        Assert::expect($html)->to_include_string('Udostępnij na Twitter');
+    }
+
+    public function testEmailShareButton()
+    {
+        $params = [];
+        $data = MemberDataFactory::testMemberData();
+        $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
+
+        Assert::expect($html)->to_include_string('<a class="email-button" href="mailto:?&subject=Sprawdz&body=https%3A//booklet.pl/">Udostępnij przez E-mail</a>');
+    }
 }

@@ -6,7 +6,8 @@ class ViralWidgetHtml
 
     public function __construct(array $params, array $get)
     {
-        $this->params = $params;
+        $this->params = $params; // data from ->widget($params)
+        $this->share_buttons = $params['share_buttons'] ?? ['facebook', 'twitter', 'email'];
         $this->get = $get;
     }
 
@@ -55,7 +56,7 @@ class ViralWidgetHtml
             Kliknij, aby udostępnić.
           </div>
           <div class="recommendation-buttons">
-            <a href="#" class="facebook">Facebook</a>
+            ' . $this->shareButtons($data) . '
           </div>
         </div>';
 
@@ -104,4 +105,57 @@ class ViralWidgetHtml
     {
        return isset($this->params['preview_mode']);
     }
+
+    private function shareButtons($data)
+    {
+        $html = '';
+
+        if (in_array('facebook', $this->share_buttons)) {
+            $html .= $this->facebookButton($data);
+        }
+
+        if (in_array('twitter', $this->share_buttons)) {
+            $html .= $this->twitterButton($data);
+        }
+
+        if (in_array('email', $this->share_buttons)) {
+            $html .= $this->emailButton($data);
+        }
+
+        return $html;
+    }
+
+    private function facebookButton($data)
+    {
+        $url = $data['source_url'] . '/' . $data['recommendation_code'];
+        $share_url = 'https://www.facebook.com/sharer/sharer.php?u=' . urlencode($url);
+
+        return '<a class="facebook-button" href="' . $share_url . '" ' . $this->newWindowPopupScript($share_url, 'Udostępnij na Facebooku') . '">
+                  Udostępnij na Facebook
+                </a>';
+    }
+
+    private function twitterButton($data)
+    {
+        $text = $data['source_url'] . '/' . $data['recommendation_code'];
+        $share_url = 'https://twitter.com/home?status=' . urlencode($text);
+
+        return '<a class="twitter-button" href="' . $share_url . '" ' . $this->newWindowPopupScript($share_url, 'Udostępnij na Twitter') . '>
+                  Udostępnij na Twitter
+                </a>';
+    }
+
+    private function emailButton($data)
+    {
+        $subject = 'Sprawdz';
+        $body = 'https%3A//booklet.pl/';
+
+        return '<a class="email-button" href="mailto:?&subject=' . $subject . '&body=' . $body . '">Udostępnij przez E-mail</a>';
+    }
+
+    private function newWindowPopupScript($share_url, $text)
+    {
+        return 'onclick="window.open(\'' . $share_url . '\',\'' . $text . '\',\'width=600,height=400\'); return false;" target="popup"';
+    }
+
 }
