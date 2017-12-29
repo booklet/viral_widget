@@ -205,4 +205,26 @@ class ViralWidgetTest extends TesterCase
         Assert::expect($html)->to_include_string('<div class="viral-alert">Podany e-mail jest niepoprawny.</div>');
         Assert::expect($html)->to_include_string('<div class="viral-info">Dziękujemy, Twoje konto zostało aktywowane.</div>');
     }
+
+    public function testWidgetSocialTexts()
+    {
+        $match = [];
+        $get = [];
+        $cookie['c51a44_recommendation_code'] = 'xyz123_recommendation';
+
+        $viral = new ViralWidget('c51a44ce318175d3c68214f6d5111111', [
+            'routing_match' => $match,
+            'get' => $get,
+            'cookie' => $cookie,
+        ]);
+        $html = $viral->widget([
+            'twitter_text' => 'Test twitter {url}',
+            'mail_subject' => 'Email title',
+            'mail_body' => 'Email body {url}',
+        ]);
+
+        Assert::expect($html)->to_include_string("href=\"https://twitter.com/home?status=Test+twitter+http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation\"");
+        Assert::expect($html)->to_include_string("onclick=\"window.open('https://twitter.com/home?status=Test+twitter+http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation'");
+        Assert::expect($html)->to_include_string("href=\"mailto:?&subject=Email%20title&body=Email%20body%20http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation\"");
+    }
 }

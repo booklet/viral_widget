@@ -137,7 +137,14 @@ class ViralWidgetHtml
 
     private function twitterButton($data)
     {
-        $text = $data['source_url'] . '/' . $data['recommendation_code'];
+        $url = $data['source_url'] . '/' . $data['recommendation_code'];
+        $text = $this->params['twitter_text'] ?? null;
+        if ($text) {
+            $text = str_replace('{url}', $url, $text);
+        } else {
+            $text = $url;
+        }
+
         $share_url = 'https://twitter.com/home?status=' . urlencode($text);
 
         return '<a class="twitter-button" href="' . $share_url . '" ' . $this->newWindowPopupScript($share_url, 'Udostępnij na Twitter') . '>
@@ -147,10 +154,12 @@ class ViralWidgetHtml
 
     private function emailButton($data)
     {
-        $subject = 'Sprawdz';
-        $body = 'https%3A//booklet.pl/';
+        $url = $data['source_url'] . '/' . $data['recommendation_code'];
+        $mail_subject = $this->params['mail_subject'] ?? 'Sprawdz';
+        $mail_body = $this->params['mail_body'] ?? $url;
+        $mail_body = str_replace('{url}', $url, $mail_body);
 
-        return '<a class="email-button" href="mailto:?&subject=' . $subject . '&body=' . $body . '">Udostępnij przez E-mail</a>';
+        return '<a class="email-button" href="mailto:?&subject=' . $this->formatTextForMailtoParam($mail_subject) . '&body=' . $this->formatTextForMailtoParam($mail_body) . '">Udostępnij przez E-mail</a>';
     }
 
     private function newWindowPopupScript($share_url, $text)
@@ -158,4 +167,7 @@ class ViralWidgetHtml
         return 'onclick="window.open(\'' . $share_url . '\',\'' . $text . '\',\'width=600,height=400\'); return false;" target="popup"';
     }
 
+    private function formatTextForMailtoParam($text) {
+        return rawurlencode(htmlspecialchars_decode($text));
+    }
 }

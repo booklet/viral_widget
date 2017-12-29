@@ -145,12 +145,37 @@ class ViralWidgetHtmlTest extends TesterCase
         Assert::expect($html)->to_include_string('Udostępnij na Twitter');
     }
 
+    public function testTwitterShareButtonWithCustomText()
+    {
+        $params = [
+            'twitter_text' => 'Custom text for twitter {url} check it.'
+        ];
+        $data = MemberDataFactory::testMemberData();
+        $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
+
+        Assert::expect($html)->to_include_string('<a class="twitter-button" href="https://twitter.com/home?status=Custom+text+for+twitter+http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation+check+it."');
+        Assert::expect($html)->to_include_string('onclick="window.open(\'https://twitter.com/home?status=Custom+text+for+twitter+http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation+check+it.\',\'Udostępnij na Twitter\',\'width=600,height=400\'); return false;"');
+        Assert::expect($html)->to_include_string('Udostępnij na Twitter');
+    }
+
     public function testEmailShareButton()
     {
         $params = [];
         $data = MemberDataFactory::testMemberData();
         $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
 
-        Assert::expect($html)->to_include_string('<a class="email-button" href="mailto:?&subject=Sprawdz&body=https%3A//booklet.pl/">Udostępnij przez E-mail</a>');
+        Assert::expect($html)->to_include_string('</a><a class="email-button" href="mailto:?&subject=Sprawdz&body=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation">Udostępnij przez E-mail</a>');
+    }
+
+    public function testEmailShareButtonWithCustomText()
+    {
+        $params = [
+            'mail_subject' => 'Check it!',
+            'mail_body' => 'Custom text for email {url} check it.',
+        ];
+        $data = MemberDataFactory::testMemberData();
+        $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
+
+        Assert::expect($html)->to_include_string('<a class="email-button" href="mailto:?&subject=Check%20it%21&body=Custom%20text%20for%20email%20http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation%20check%20it.">Udostępnij przez E-mail</a>');
     }
 }
