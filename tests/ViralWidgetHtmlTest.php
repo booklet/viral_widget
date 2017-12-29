@@ -119,7 +119,7 @@ class ViralWidgetHtmlTest extends TesterCase
 
         $html = (new ViralWidgetHtml($params, $get))->registrationForm($data);
 
-        Assert::expect($html)->to_include_string('<div class="viral-alert">Kampanie została zawieszona. Rejestracja nie jest aktualnie możliwa.</div>');
+        Assert::expect($html)->to_include_string('<div class="viral-alert">Kampania została zawieszona. Rejestracja nie jest aktualnie możliwa.</div>');
         Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/abcdefghijklmnopqrst" method="post">');
     }
 

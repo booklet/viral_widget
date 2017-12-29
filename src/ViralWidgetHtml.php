@@ -95,7 +95,7 @@ class ViralWidgetHtml
 
         $campaign = $this->get['campaign'] ?? '';
         if ($campaign == 'suspended' or $this->isPreviewMode()) {
-            $html .= '<div class="viral-alert">Kampanie została zawieszona. Rejestracja nie jest aktualnie możliwa.</div>';
+            $html .= '<div class="viral-alert">Kampania została zawieszona. Rejestracja nie jest aktualnie możliwa.</div>';
         }
 
         return $html;
