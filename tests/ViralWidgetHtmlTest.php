@@ -70,6 +70,22 @@ class ViralWidgetHtmlTest extends TesterCase
         Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/abcdefghijklmnopqrst" method="post">');
     }
 
+    // ?show=signingup_successfully
+    public function testInformationAlertsSigningupSuccessfully()
+    {
+        $params = [];
+        $data = [
+            'viral_campaign_hash_id' => 'abcdefghijklmnopqrst',
+            'registration_code_value' => null,
+        ];
+        $get = ['show' => 'signingup_successfully'];
+
+        $html = (new ViralWidgetHtml($params, $get))->registrationForm($data);
+
+        Assert::expect($html)->to_include_string('<div class="viral-info">Dziękujemy za dołączenie do zabawy, sprawdź swoją pocztę i aktywuj konto.</div>');
+        Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/abcdefghijklmnopqrst" method="post">');
+    }
+
     // ?show=activation_successfully
     public function testInformationAlertsActivationSuccessfully()
     {

@@ -85,6 +85,10 @@ class ViralWidgetHtml
         }
 
         $show = $this->get['show'] ?? '';
+        if ($show == 'signingup_successfully' or $this->isPreviewMode()) {
+            $html .= '<div class="viral-info">Dziękujemy za dołączenie do zabawy, sprawdź swoją pocztę i aktywuj konto.</div>';
+        }
+
         if ($show == 'activation_successfully' or $this->isPreviewMode()) {
             $html .= '<div class="viral-info">Dziękujemy, Twoje konto zostało aktywowane.</div>';
         }
