@@ -16,7 +16,7 @@ class ViralWidgetTest extends TesterCase
 
         Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/c51a44ce318175d3c68214f6d5111111" method="post">');
         Assert::expect($html)->to_include_string('<input type="hidden" name="member[registration_code]" value="">');
-        Assert::expect($html)->to_include_string('<input type="email" name="member[email]" class="form-control" id="viral-member-email">');
+        Assert::expect($html)->to_include_string('<input type="email" name="member[email]" class="form-control" id="viral-member-email" required>');
         Assert::expect($html)->to_include_string('<input type="text" name="member[name]" class="form-control" id="viral-member-name">');
         Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
     }
@@ -36,7 +36,7 @@ class ViralWidgetTest extends TesterCase
 
         Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/c51a44ce318175d3c68214f6d5111111" method="post">');
         Assert::expect($html)->to_include_string('<input type="hidden" name="member[registration_code]" value="abc123_registration">');
-        Assert::expect($html)->to_include_string('<input type="email" name="member[email]" class="form-control" id="viral-member-email">');
+        Assert::expect($html)->to_include_string('<input type="email" name="member[email]" class="form-control" id="viral-member-email" required>');
         Assert::expect($html)->to_include_string('<input type="text" name="member[name]" class="form-control" id="viral-member-name">');
         Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
     }
@@ -199,7 +199,7 @@ class ViralWidgetTest extends TesterCase
         $html = $viral->widget(['preview_mode' => true]);
 
         Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/CusT0mH4sH" method="post">');
-        Assert::expect($html)->to_include_string('<input type="email" name="member[email]" class="form-control" id="viral-member-email">');
+        Assert::expect($html)->to_include_string('<input type="email" name="member[email]" class="form-control" id="viral-member-email" required>');
         Assert::expect($html)->to_include_string('<input type="text" name="member[name]" class="form-control" id="viral-member-name">');
         Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
         Assert::expect($html)->to_include_string('<div class="viral-alert">Podany e-mail jest niepoprawny.</div>');

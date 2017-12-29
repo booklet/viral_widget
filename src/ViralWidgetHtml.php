@@ -25,7 +25,7 @@ class ViralWidgetHtml
           <input type="hidden" name="member[registration_code]" value="' . $data['registration_code_value'] . '">
           <div class="form-group form-group-email">
             <label for="viral-member-email">E-mail:</label>
-            <input type="email" name="member[email]" class="form-control" id="viral-member-email">
+            <input type="email" name="member[email]" class="form-control" id="viral-member-email" required>
           </div>
           <div class="form-group form-group-name">
             <label for="viral-member-name">Imie:</label>

@@ -13,7 +13,7 @@ class ViralWidgetHtmlTest extends TesterCase
 
         Assert::expect($html)->to_include_string('<form id="viral-form" action="http://api.booklet.dev/v1/viral_signing_up/abcdefghijklmnopqrst" method="post">');
         Assert::expect($html)->to_include_string('<input type="hidden" name="member[registration_code]" value="">');
-        Assert::expect($html)->to_include_string('<input type="email" name="member[email]" class="form-control" id="viral-member-email">');
+        Assert::expect($html)->to_include_string('<input type="email" name="member[email]" class="form-control" id="viral-member-email" required>');
         Assert::expect($html)->to_include_string('<input type="text" name="member[name]" class="form-control" id="viral-member-name">');
         Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
     }
