@@ -220,11 +220,11 @@ class ViralWidgetTest extends TesterCase
         $html = $viral->widget([
             'twitter_text' => 'Test twitter {url}',
             'mail_subject' => 'Email title',
-            'mail_body' => 'Email body {url}',
+            'mail_body' => 'Email body <a href="{url}">{url}</a>',
         ]);
 
         Assert::expect($html)->to_include_string("href=\"https://twitter.com/home?status=Test+twitter+http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation\"");
         Assert::expect($html)->to_include_string("onclick=\"window.open('https://twitter.com/home?status=Test+twitter+http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation'");
-        Assert::expect($html)->to_include_string("href=\"mailto:?&subject=Email%20title&body=Email%20body%20http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation\"");
+        Assert::expect($html)->to_include_string("href=\"mailto:?&subject=Email%20title&body=Email%20body%20%3Ca%20href%3D%22http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation%22%3Ehttp%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation%3C%2Fa%3E\"");
     }
 }
