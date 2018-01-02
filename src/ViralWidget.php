@@ -28,6 +28,8 @@ class ViralWidget
         $this->setCodesValues();
         $this->generateCookiesToSet();
         $this->setCookies();
+
+
     }
 
     public function widget(array $params = [])
@@ -41,6 +43,13 @@ class ViralWidget
 
         if (isset($this->get['activate'])) {
             header('Location: ' . ViralWidgetApi::getApiUrl() . 'viral_member_activation/' . $this->get['activate']);
+            exit;
+        }
+
+        // If url contains 'recommendation_code' param, remove it from url and redirect back witout param
+        if (isset($this->get['recommendation_code']) and isset($_SERVER['REQUEST_URI'])) {
+            $current_url = explode("?", $_SERVER['REQUEST_URI']);
+            header('Location: ' . $current_url[0]);
             exit;
         }
 
