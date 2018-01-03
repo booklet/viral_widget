@@ -141,7 +141,7 @@ class ViralWidgetTest extends TesterCase
         $html = $viral->widget();
 
         Assert::expect($html)->to_include_string('Poleceń do tej pory: <span class="points">0</span>.');
-        Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral/xyz123_recommendation">');
+        Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral/xyz123_recommendation" id="viral-recommendation-url">');
     }
 
     public function testGetWidgetWhenUserRegistredByCookie()
@@ -182,7 +182,7 @@ class ViralWidgetTest extends TesterCase
         $html = $viral->widget();
 
         Assert::expect($html)->to_include_string('Poleceń do tej pory: <span class="points">0</span>.');
-        Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral/xyz123_recommendation">');
+        Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral/xyz123_recommendation" id="viral-recommendation-url">');
     }
 
     public function testPreviewMode()

@@ -50,7 +50,8 @@ class ViralWidgetHtml
         <div id="viral-recommendation">
           <div class="lead-text">' . $this->getLeadText($data) .'</div>
           <div class="recommendation-link">
-            <input type="text" value="' . $data['source_url'] . '/' . $data['recommendation_code'] . '">
+            <input type="text" value="' . $data['source_url'] . '/' . $data['recommendation_code'] . '" id="viral-recommendation-url">
+            <button class="copy-to-clipboard-button" onclick="viralCopyToClipboard()">Kopiuj</button>
           </div>
           <div class="recommendation-buttons-text">
             Kliknij, aby udostępnić.
@@ -58,7 +59,8 @@ class ViralWidgetHtml
           <div class="recommendation-buttons">
             ' . $this->shareButtons($data) . '
           </div>
-        </div>';
+        </div>
+        ' . $this->copyToClipboardScript();
 
         return $html;
     }
@@ -107,7 +109,7 @@ class ViralWidgetHtml
 
     private function isPreviewMode()
     {
-       return isset($this->params['preview_mode']);
+        return isset($this->params['preview_mode']);
     }
 
     private function shareButtons($data)
@@ -127,6 +129,17 @@ class ViralWidgetHtml
         }
 
         return $html;
+    }
+
+    private function copyToClipboardScript()
+    {
+        return '<script type="text/javascript">
+                  function viralCopyToClipboard() {
+                    var copyText = document.getElementById("viral-recommendation-url");
+                    copyText.select();
+                    document.execCommand("Copy");
+                  }
+                </script>';
     }
 
     private function facebookButton($data)
