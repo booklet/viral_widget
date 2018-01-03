@@ -138,7 +138,7 @@ class ViralWidgetHtml
                     var copyText = document.getElementById("viral-recommendation-url");
                     copyText.select();
                     document.execCommand("Copy");
-                    alert("Twój link polegający został skopiowany.");
+                    alert("Twój link polecający został skopiowany.");
                   }
                 </script>';
     }
