@@ -28,8 +28,6 @@ class ViralWidget
         $this->setCodesValues();
         $this->generateCookiesToSet();
         $this->setCookies();
-
-
     }
 
     public function widget(array $params = [])
@@ -46,10 +44,10 @@ class ViralWidget
             exit;
         }
 
-        // If url contains 'recommendation_code' param, remove it from url and redirect back witout param
-        if (isset($this->get['recommendation_code']) and isset($_SERVER['REQUEST_URI'])) {
-            $current_url = explode("?", $_SERVER['REQUEST_URI']);
-            header('Location: ' . $current_url[0]);
+        // We remove recommendation_code from url that user will not be able to share link with it.
+        if ($this->isRecommendationCodeParameterWasPassed()) {
+            $url_witout_recommendation_code = (new ViralWidgetUrl())->createCurrentUrlWitoutRecommendationCodeParam();
+            header('Location: ' . $url_witout_recommendation_code);
             exit;
         }
 
@@ -143,6 +141,12 @@ class ViralWidget
     private function isCookieExistsWithEqualValue($name, $value)
     {
         return isset($this->cookies[$name]) and $this->cookies[$name] == $value;
+    }
+
+    private function isRecommendationCodeParameterWasPassed()
+    {
+        return (isset($this->get[self::RECOMMENDATION_KEY]) or isset($this->routing_match[self::RECOMMENDATION_KEY]))
+                and isset($_SERVER['REQUEST_URI']);
     }
 
     public static function isTestMode()
