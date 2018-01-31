@@ -47,7 +47,11 @@ class ViralWidget
         // We remove recommendation_code from url that user will not be able to share link with it.
         if ($this->isRecommendationCodeParameterWasPassed()) {
             $url_witout_recommendation_code = (new ViralWidgetUrl())->createCurrentUrlWitoutRecommendationCodeParam();
-            header('Location: ' . $url_witout_recommendation_code);
+            if (headers_sent()) {
+                echo '<script>location.replace("' . $url_witout_recommendation_code . '");</script>';
+            } else{
+                header('Location: ' . $url_witout_recommendation_code);
+            }
             exit;
         }
 
