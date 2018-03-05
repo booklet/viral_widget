@@ -144,6 +144,25 @@ class ViralWidgetTest extends TesterCase
         Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral/xyz123_recommendation" id="viral-recommendation-url">');
     }
 
+    public function testGetWidgetWhenUserRegistredByGetParamWitUseGetUrls()
+    {
+        $match['registration_code'] = 'abc123_registration';
+        $get['recommendation_code'] = 'xyz123_recommendation';
+        $cookie = [];
+
+        $viral = new ViralWidget('c51a44ce318175d3c68214f6d5111111', [
+            'routing_match' => $match,
+            'get' => $get,
+            'cookie' => $cookie,
+            'use_get_urls' => true,
+        ]);
+
+        $html = $viral->widget();
+
+        Assert::expect($html)->to_include_string('Poleceń do tej pory: <span class="points">0</span>.');
+        Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral?recommendation_code=xyz123_recommendation" id="viral-recommendation-url">');
+    }
+
     public function testGetWidgetWhenUserRegistredByCookie()
     {
         $match['registration_code'] = 'abc123_registration';

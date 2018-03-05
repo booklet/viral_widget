@@ -18,6 +18,7 @@ class ViralWidgetHtmlTest extends TesterCase
         Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
     }
 
+
     public function testRecommendationWidget()
     {
         $params = []; // dane z ->widget($params)
@@ -27,6 +28,17 @@ class ViralWidgetHtmlTest extends TesterCase
 
         Assert::expect($html)->to_include_string('Poleceń do tej pory: <span class="points">0</span>.');
         Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral/xyz123_recommendation" id="viral-recommendation-url">');
+    }
+
+    public function testRecommendationWidgetWitUseGetUrls()
+    {
+        $params = []; // dane z ->widget($params)
+        $data = MemberDataFactory::testMemberData();  // dane z klasy
+        $data = array_merge($data, ['use_get_urls' => true]);
+
+        $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
+
+        Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral?recommendation_code=xyz123_recommendation" id="viral-recommendation-url">');
     }
 
     // ?email[0]=jest+już+wykorzystany+w+tej+kampanii

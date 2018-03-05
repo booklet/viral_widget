@@ -23,6 +23,9 @@ class ViralWidget
         $this->routing_match = $params['routing_match'] ?? [];
         $this->get = $params['get'] ?? [];
         $this->cookies = $params['cookie'] ?? [];
+        // W przypadku braku możliwości ustawienia odpowiedniego routingu zamiast
+        // http://www.test.pl/viral/KUPON używany linków http://www.test.pl/viral?recommendation_code=KUPON
+        $this->use_get_urls = $params['use_get_urls'] ?? false;
 
         $this->setCookiesKeys();
         $this->setCodesValues();
@@ -32,6 +35,8 @@ class ViralWidget
 
     public function widget(array $params = [])
     {
+
+
         // Preview mode to display all forms and alerts to easy css style
         if (isset($params['preview_mode'])) {
             $h = $this->recommendationWidget($params);
@@ -107,6 +112,8 @@ class ViralWidget
     private function recommendationWidget($params)
     {
         $member_data = (new ViralWidgetRequest())->getMemberData($this->recommendation_code_value);
+        $member_data = array_merge($member_data, ['use_get_urls' => $this->use_get_urls]);
+
         if ($member_data) {
             return (new ViralWidgetHtml($params, $this->get))->recommendationWidget($member_data);
         } else {
