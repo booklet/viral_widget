@@ -35,8 +35,6 @@ class ViralWidget
 
     public function widget(array $params = [])
     {
-
-
         // Preview mode to display all forms and alerts to easy css style
         if (isset($params['preview_mode'])) {
             $h = $this->recommendationWidget($params);
@@ -112,9 +110,9 @@ class ViralWidget
     private function recommendationWidget($params)
     {
         $member_data = (new ViralWidgetRequest())->getMemberData($this->recommendation_code_value);
-        $member_data = array_merge($member_data, ['use_get_urls' => $this->use_get_urls]);
 
         if ($member_data) {
+            $member_data = array_merge($member_data, ['use_get_urls' => $this->use_get_urls]);
             return (new ViralWidgetHtml($params, $this->get))->recommendationWidget($member_data);
         } else {
             return $this->registrationForm($params);
