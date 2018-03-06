@@ -45,13 +45,13 @@ class ViralWidgetHtml
         }
 
         $html = $this->generateInformationAlerts();
-        $recommendation_code_url = $this->getRecommendationCodeLink($data);
+        $registration_code_url  = $this->getRegistrationCodeLink($data);
 
         $html .= '
         <div id="viral-recommendation">
           <div class="lead-text">' . $this->getLeadText($data) .'</div>
           <div class="recommendation-link">
-            <input type="text" value="' . $recommendation_code_url . '" id="viral-recommendation-url">
+            <input type="text" value="' . $registration_code_url . '" id="viral-recommendation-url">
             <button class="copy-to-clipboard-button" onclick="viralCopyToClipboard()">Kopiuj</button>
           </div>
           <div class="recommendation-buttons-text">
@@ -146,7 +146,7 @@ class ViralWidgetHtml
 
     private function facebookButton($data)
     {
-        $url = $this->getRecommendationCodeLink($data);
+        $url = $this->getRegistrationCodeLink($data);
         $share_url = 'https://www.facebook.com/sharer/sharer.php?u=' . urlencode($url);
 
         return '<a class="facebook-button" href="' . $share_url . '" ' . $this->newWindowPopupScript($share_url, 'Udostępnij na Facebooku') . '">
@@ -156,7 +156,7 @@ class ViralWidgetHtml
 
     private function twitterButton($data)
     {
-        $url = $this->getRecommendationCodeLink($data);
+        $url = $this->getRegistrationCodeLink($data);
         $text = $this->params['twitter_text'] ?? null;
         if ($text) {
             $text = str_replace('{url}', $url, $text);
@@ -173,7 +173,7 @@ class ViralWidgetHtml
 
     private function emailButton($data)
     {
-        $url = $this->getRecommendationCodeLink($data);
+        $url = $this->getRegistrationCodeLink($data);
         $mail_subject = $this->params['mail_subject'] ?? 'Sprawdz';
         $mail_body = $this->params['mail_body'] ?? $url;
         $mail_body = str_replace('{url}', $url, $mail_body);
@@ -194,6 +194,15 @@ class ViralWidgetHtml
     {
         if (isset($data['use_get_urls']) and $data['use_get_urls']) {
             return $data['source_url'] . '?recommendation_code=' . $data['recommendation_code'];
+        } else {
+            return $data['source_url'] . '/' . $data['recommendation_code'];
+        }
+    }
+
+    private function getRegistrationCodeLink($data)
+    {
+        if (isset($data['use_get_urls']) and $data['use_get_urls']) {
+            return $data['source_url'] . '?registration_code=' . $data['recommendation_code'];
         } else {
             return $data['source_url'] . '/' . $data['recommendation_code'];
         }

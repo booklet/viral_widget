@@ -38,7 +38,7 @@ class ViralWidgetHtmlTest extends TesterCase
 
         $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
 
-        Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral?recommendation_code=xyz123_recommendation" id="viral-recommendation-url">');
+        Assert::expect($html)->to_include_string('<input type="text" value="http://booklet.dev/viral?registration_code=xyz123_recommendation" id="viral-recommendation-url">');
     }
 
     // ?email[0]=jest+już+wykorzystany+w+tej+kampanii
