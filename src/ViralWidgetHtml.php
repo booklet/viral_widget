@@ -52,7 +52,7 @@ class ViralWidgetHtml
           <div class="lead-text">' . $this->getLeadText($data) .'</div>
           <div class="recommendation-link">
             <input type="text" value="' . $registration_code_url . '" id="viral-recommendation-url">
-            <button class="copy-to-clipboard-button" onclick="viralCopyToClipboard()">Kopiuj</button>
+            <button class="copy-to-clipboard-button" onclick="viralCopyToClipboard()"><i class="copy-icon"></i>Kopiuj</button>
           </div>
           <div class="recommendation-buttons-text">
             Kliknij, aby udostępnić.
@@ -191,7 +191,6 @@ class ViralWidgetHtml
     private function fbMessenger($data)
     {
         if (ViralUserDevice::isNotMobileDevice() and !ViralWidget::isTestMode()) {
-            print_r(ViralUserDevice::getOS());
             return;
         }
 
