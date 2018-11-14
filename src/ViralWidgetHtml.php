@@ -154,7 +154,7 @@ class ViralWidgetHtml
         $share_url = 'https://www.facebook.com/sharer/sharer.php?u=' . urlencode($url);
 
         return '<a class="facebook-button" href="' . $share_url . '" ' . $this->newWindowPopupScript($share_url, 'Udostępnij na Facebooku') . '">
-                  Udostępnij na Facebook
+                  <i class="facebook-icon"></i>Udostępnij na Facebook
                 </a>';
     }
 
@@ -171,7 +171,7 @@ class ViralWidgetHtml
         $share_url = 'https://twitter.com/home?status=' . urlencode($text);
 
         return '<a class="twitter-button" href="' . $share_url . '" ' . $this->newWindowPopupScript($share_url, 'Udostępnij na Twitter') . '>
-                  Udostępnij na Twitter
+                  <i class="twitter-icon"></i>Udostępnij na Twitter
                 </a>';
     }
 
@@ -182,7 +182,7 @@ class ViralWidgetHtml
         $mail_body = $this->params['mail_body'] ?? $url;
         $mail_body = str_replace('{url}', $url, $mail_body);
 
-        return '<a class="email-button" href="mailto:?&subject=' . $this->formatTextForMailtoParam($mail_subject) . '&body=' . $this->formatTextForMailtoParam($mail_body) . '">Udostępnij przez E-mail</a>';
+        return '<a class="email-button" href="mailto:?&subject=' . $this->formatTextForMailtoParam($mail_subject) . '&body=' . $this->formatTextForMailtoParam($mail_body) . '"><i class="email-icon"></i>Udostępnij przez E-mail</a>';
     }
 
     private function fbMessenger($data)
@@ -190,7 +190,7 @@ class ViralWidgetHtml
         $url = $this->params['fb_messenger_link'] ?? $this->getRegistrationCodeLink($data);
         $app_id = $this->params['fb_messenger_app_id'] ?? 'missing_app_id';
 
-        return '<a href="fb-messenger://share/?link=' . urlencode($url) . '&app_id=' . $app_id . '">Udostępnij przez Messengera</a>';
+        return '<a class="messenger-button" href="fb-messenger://share/?link=' . urlencode($url) . '&app_id=' . $app_id . '"><i class="messenger-icon"></i>Udostępnij przez Messengera</a>';
     }
 
     private function newWindowPopupScript($share_url, $text)

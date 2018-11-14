@@ -192,7 +192,7 @@ class ViralWidgetHtmlTest extends TesterCase
         $data = MemberDataFactory::testMemberData();
         $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
 
-        Assert::expect($html)->to_include_string('</a><a class="email-button" href="mailto:?&subject=Sprawdz&body=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation">Udostępnij przez E-mail</a>');
+        Assert::expect($html)->to_include_string('</a><a class="email-button" href="mailto:?&subject=Sprawdz&body=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation"><i class="email-icon"></i>Udostępnij przez E-mail</a>');
     }
 
     public function testEmailShareButtonWithCustomText()
@@ -204,7 +204,7 @@ class ViralWidgetHtmlTest extends TesterCase
         $data = MemberDataFactory::testMemberData();
         $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
 
-        Assert::expect($html)->to_include_string('<a class="email-button" href="mailto:?&subject=Check%20it%21&body=Custom%20text%20for%20email%20http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation%20check%20it.">Udostępnij przez E-mail</a>');
+        Assert::expect($html)->to_include_string('<a class="email-button" href="mailto:?&subject=Check%20it%21&body=Custom%20text%20for%20email%20http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation%20check%20it."><i class="email-icon"></i>Udostępnij przez E-mail</a>');
     }
 
     public function testFbMessengerShareButton()
@@ -213,6 +213,6 @@ class ViralWidgetHtmlTest extends TesterCase
         $data = MemberDataFactory::testMemberData();
         $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
 
-        Assert::expect($html)->to_include_string('<a href="fb-messenger://share/?link=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation&app_id=missing_app_id">Udostępnij przez Messengera</a>');
+        Assert::expect($html)->to_include_string('<a class="messenger-button" href="fb-messenger://share/?link=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation&app_id=missing_app_id"><i class="messenger-icon"></i>Udostępnij przez Messengera</a>');
     }
 }
