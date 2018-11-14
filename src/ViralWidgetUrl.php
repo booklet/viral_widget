@@ -1,8 +1,12 @@
 <?php
 class ViralWidgetUrl
 {
-    public function createCurrentUrlWitoutRecommendationCodeParam(string $url = null)
+    public function createCurrentUrlWitoutRecommendationCodeParam(string $url = null, $params)
     {
+
+
+
+
         $url = $url ?? $_SERVER['REQUEST_URI'];
         $parsed_url = parse_url($url);
 

@@ -28,5 +28,11 @@ class ViralWidgetUrlTest extends TesterCase
         $url_witout_recommendation_code = $url->createCurrentUrlWitoutRecommendationCodeParam($test_url);
 
         Assert::expect($url_witout_recommendation_code)->to_equal('http://fotobum.pl/viral');
+
+
+        $test_url = 'http://fotobum.pl/viral-thansk/abc123';
+        $url_witout_recommendation_code = $url->createCurrentUrlWitoutRecommendationCodeParam($test_url, ['recommendation_code' => 'abc123']);
+
+        Assert::expect($url_witout_recommendation_code)->to_equal('http://fotobum.pl/viral-thansk');
     }
 }

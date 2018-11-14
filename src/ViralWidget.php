@@ -80,7 +80,7 @@ class ViralWidget
     private function setCodesValues()
     {
         $this->registration_code_value = $this->routing_match[self::REGISTRATION_KEY] ?? $this->cookies[$this->cookie_registration_key_name] ?? null;
-        $this->recommendation_code_value = $this->get[self::RECOMMENDATION_KEY] ?? $this->cookies[$this->cookie_recommendation_key_name] ?? null;
+        $this->recommendation_code_value = $this->routing_match[self::RECOMMENDATION_KEY] ?? $this->get[self::RECOMMENDATION_KEY] ?? $this->cookies[$this->cookie_recommendation_key_name] ?? null;
     }
 
     private function generateCookiesToSet()
