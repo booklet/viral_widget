@@ -206,4 +206,13 @@ class ViralWidgetHtmlTest extends TesterCase
 
         Assert::expect($html)->to_include_string('<a class="email-button" href="mailto:?&subject=Check%20it%21&body=Custom%20text%20for%20email%20http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation%20check%20it.">Udostępnij przez E-mail</a>');
     }
+
+    public function testFbMessengerShareButton()
+    {
+        $params = ['share_buttons' => ['fb_messenger']];
+        $data = MemberDataFactory::testMemberData();
+        $html = (new ViralWidgetHtml($params, []))->recommendationWidget($data);
+
+        Assert::expect($html)->to_include_string('<a href="fb-messenger://share/?link=http%3A%2F%2Fbooklet.dev%2Fviral%2Fxyz123_recommendation&app_id=missing_app_id">Udostępnij przez Messengera</a>');
+    }
 }

@@ -24,7 +24,7 @@ class ViralWidget
         $this->get = $params['get'] ?? [];
         $this->cookies = $params['cookie'] ?? [];
         // W przypadku braku możliwości ustawienia odpowiedniego routingu zamiast
-        // http://www.test.pl/viral/KUPON używany linków http://www.test.pl/viral?recommendation_code=KUPON
+        // http://www.test.pl/viral/KUPON używany linków http://www.test.pl/viral?registration_cod=KUPON
         $this->use_get_urls = $params['use_get_urls'] ?? false;
 
         $this->setCookiesKeys();
@@ -42,14 +42,17 @@ class ViralWidget
             return $h;
         }
 
+        // User activate
         if (isset($this->get['activate'])) {
             header('Location: ' . ViralWidgetApi::getApiUrl() . 'viral_member_activation/' . $this->get['activate']);
             exit;
         }
 
         // We remove recommendation_code from url that user will not be able to share link with it.
+        // So no one can take other summary page (account)
         if ($this->isRecommendationCodeParameterWasPassed()) {
-            $url_witout_recommendation_code = (new ViralWidgetUrl())->createCurrentUrlWitoutRecommendationCodeParam();
+
+            $url_witout_recommendation_code = (new ViralWidgetUrl())->createCurrentUrlWitoutRecommendationCodeParam(null, $this->routing_match);
             header('Location: ' . $url_witout_recommendation_code);
             exit;
         }
@@ -150,6 +153,8 @@ class ViralWidget
 
     private function isRecommendationCodeParameterWasPassed()
     {
+        // $_SERVER['REQUEST_URI'] - wszystko, razem z parametrami, po domenie .pl/[...]
+
         return (isset($this->get[self::RECOMMENDATION_KEY]) or isset($this->routing_match[self::RECOMMENDATION_KEY]))
                 and isset($_SERVER['REQUEST_URI']);
     }

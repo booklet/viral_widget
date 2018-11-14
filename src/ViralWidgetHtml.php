@@ -129,6 +129,10 @@ class ViralWidgetHtml
             $html .= $this->emailButton($data);
         }
 
+        if (in_array('fb_messenger', $this->share_buttons)) {
+            $html .= $this->fbMessenger($data);
+        }
+
         return $html;
     }
 
@@ -179,6 +183,14 @@ class ViralWidgetHtml
         $mail_body = str_replace('{url}', $url, $mail_body);
 
         return '<a class="email-button" href="mailto:?&subject=' . $this->formatTextForMailtoParam($mail_subject) . '&body=' . $this->formatTextForMailtoParam($mail_body) . '">Udostępnij przez E-mail</a>';
+    }
+
+    private function fbMessenger($data)
+    {
+        $url = $this->params['fb_messenger_link'] ?? $this->getRegistrationCodeLink($data);
+        $app_id = $this->params['fb_messenger_app_id'] ?? 'missing_app_id';
+
+        return '<a href="fb-messenger://share/?link=' . urlencode($url) . '&app_id=' . $app_id . '">Udostępnij przez Messengera</a>';
     }
 
     private function newWindowPopupScript($share_url, $text)
