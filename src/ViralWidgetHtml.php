@@ -190,6 +190,11 @@ class ViralWidgetHtml
 
     private function fbMessenger($data)
     {
+        if (ViralUserDevice::isNotMobileDevice() and !ViralWidget::isTestMode()) {
+            print_r(ViralUserDevice::getOS());
+            return;
+        }
+
         $url = $this->params['fb_messenger_link'] ?? $this->getRegistrationCodeLink($data);
         $app_id = $this->params['fb_messenger_app_id'] ?? 'missing_app_id';
 
