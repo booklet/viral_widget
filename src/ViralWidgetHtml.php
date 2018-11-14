@@ -117,20 +117,23 @@ class ViralWidgetHtml
     {
         $html = '';
 
-        if (in_array('facebook', $this->share_buttons)) {
-            $html .= $this->facebookButton($data);
-        }
+        // show button in order from share_buttons array
+        foreach ($this->share_buttons as $button_name) {
+            if ($button_name == 'facebook') {
+                $html .= $this->facebookButton($data);
+            }
 
-        if (in_array('twitter', $this->share_buttons)) {
-            $html .= $this->twitterButton($data);
-        }
+            if ($button_name == 'twitter') {
+                $html .= $this->twitterButton($data);
+            }
 
-        if (in_array('email', $this->share_buttons)) {
-            $html .= $this->emailButton($data);
-        }
+            if ($button_name == 'email') {
+                $html .= $this->emailButton($data);
+            }
 
-        if (in_array('fb_messenger', $this->share_buttons)) {
-            $html .= $this->fbMessenger($data);
+            if ($button_name == 'fb_messenger') {
+                $html .= $this->fbMessenger($data);
+            }
         }
 
         return $html;
