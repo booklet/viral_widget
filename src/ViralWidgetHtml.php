@@ -50,12 +50,15 @@ class ViralWidgetHtml
         $html .= '
         <div id="viral-recommendation">
           <div class="lead-text">' . $this->getLeadText($data) .'</div>
+          <div class="recommendation-link-text">
+            Twój link polecający
+          </div>
           <div class="recommendation-link">
             <input type="text" value="' . $registration_code_url . '" id="viral-recommendation-url">
             <button class="copy-to-clipboard-button" onclick="viralCopyToClipboard()"><i class="copy-icon"></i>Kopiuj</button>
           </div>
           <div class="recommendation-buttons-text">
-            Kliknij, aby udostępnić.
+            Kliknij, aby udostępnić link.
           </div>
           <div class="recommendation-buttons">
             ' . $this->shareButtons($data) . '
