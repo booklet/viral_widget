@@ -21,7 +21,6 @@ class ViralWidgetHtmlTest extends TesterCase
     public function testRegistrationFormWithRegulations()
     {
         $params = [
-            'requires_acceptance_of_regulations' => true,
             'regulations_link' => 'https://page.test/regulamin',
         ]; // dane z ->widget($params)
 

@@ -8,7 +8,6 @@ class ViralWidgetHtml
     {
         $this->params = $params; // data from ->widget($params)
         $this->share_buttons = $params['share_buttons'] ?? ['facebook', 'twitter', 'email'];
-        $this->requires_acceptance_of_regulations = $params['requires_acceptance_of_regulations'] ?? false;
 
         $this->get = $get;
     }
@@ -74,9 +73,9 @@ class ViralWidgetHtml
 
     public function regulationsAcceptance()
     {
-        if ($this->requires_acceptance_of_regulations) {
-            $regulations_link = $this->params['regulations_link'] ?? '';
+        $regulations_link = $this->params['regulations_link'] ?? null;
 
+        if ($regulations_link) {
             return '
             <div class="form-group form-group-regulations">
               <input type="checkbox" name="member[regulations]" class="form-control" id="viral-regulations" required>
