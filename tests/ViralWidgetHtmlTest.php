@@ -18,6 +18,23 @@ class ViralWidgetHtmlTest extends TesterCase
         Assert::expect($html)->to_include_string('<button type="submit" class="btn btn-primary">Zapisz się</button>');
     }
 
+    public function testRegistrationFormWithRegulations()
+    {
+        $params = [
+            'requires_acceptance_of_regulations' => true,
+            'regulations_link' => 'https://page.test/regulamin',
+        ]; // dane z ->widget($params)
+
+        $data = [
+            'viral_campaign_hash_id' => 'abcdefghijklmnopqrst',
+            'registration_code_value' => null,
+        ];
+
+        $html = (new ViralWidgetHtml($params, []))->registrationForm($data);
+
+        Assert::expect($html)->to_include_string('<input type="checkbox" name="member[regulations]" class="form-control" id="viral-regulations" required>');
+        Assert::expect($html)->to_include_string('Oświadczam, że zapoznałem się z <a href="https://page.test/regulamin" target="_blank">Regulaminem</a>');
+    }
 
     public function testRecommendationWidget()
     {

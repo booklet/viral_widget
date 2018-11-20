@@ -8,6 +8,8 @@ class ViralWidgetHtml
     {
         $this->params = $params; // data from ->widget($params)
         $this->share_buttons = $params['share_buttons'] ?? ['facebook', 'twitter', 'email'];
+        $this->requires_acceptance_of_regulations = $params['requires_acceptance_of_regulations'] ?? false;
+
         $this->get = $get;
     }
 
@@ -31,6 +33,7 @@ class ViralWidgetHtml
             <label for="viral-member-name">Imie:</label>
             <input type="text" name="member[name]" class="form-control" id="viral-member-name">
           </div>
+          ' . $this->regulationsAcceptance() . '
           <button type="submit" class="btn btn-primary">Zapisz się</button>
         </form>';
 
@@ -67,6 +70,21 @@ class ViralWidgetHtml
         ' . $this->copyToClipboardScript();
 
         return $html;
+    }
+
+    public function regulationsAcceptance()
+    {
+        if ($this->requires_acceptance_of_regulations) {
+            $regulations_link = $this->params['regulations_link'] ?? '';
+
+            return '
+            <div class="form-group form-group-regulations">
+              <input type="checkbox" name="member[regulations]" class="form-control" id="viral-regulations" required>
+              <label for="viral-regulations">
+                Oświadczam, że zapoznałem się z <a href="' . $regulations_link . '" target="_blank">Regulaminem</a>
+              </label>
+            </div>';
+        }
     }
 
     public function getLeadText($data)
