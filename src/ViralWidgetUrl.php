@@ -6,7 +6,7 @@ class ViralWidgetUrl
         // for recommendation code passed as part of url (match)
         // https://fotobum.pl/zabawa-polecaj/eavtmu => https://fotobum.pl/zabawa-polecaj
         $recommendation_code = $in_params[ViralWidget::RECOMMENDATION_KEY] ?? null;
-        if ($recommendation_code) {
+        if ($recommendation_code and !$this->urlHaveRecommendationCodeParam($url)) {
             $url = $url ?? $_SERVER['REQUEST_URI'];
             $url = str_replace('/' . $recommendation_code, '' ,$url);
 
@@ -34,5 +34,10 @@ class ViralWidgetUrl
         }
 
         return $url_domain . '?' . $params_string;
+    }
+
+    private function urlHaveRecommendationCodeParam(string $url)
+    {
+        return strpos($url, ViralWidget::RECOMMENDATION_KEY) !== false;
     }
 }
