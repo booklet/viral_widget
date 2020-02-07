@@ -1,13 +1,13 @@
 {
-  "name": "boooklet/viral_widget",
+  "name": "booklet/viral_widget",
   "repositories": [
     {
       "type": "package",
       "package": {
-        "name": "boooklet/viral_widget",
+        "name": "booklet/viral_widget",
         "type": "package",
         "source": {
-          "url": "git@github.com/boooklet/viral_widget.git",
+          "url": "git@github.com/booklet/viral_widget.git",
           "type": "git",
           "reference": "master"
         },
@@ -16,11 +16,11 @@
     },
     {
       "type": "git",
-      "url": "https://github.com/boooklet/tester.git"
+      "url": "https://github.com/booklet/tester.git"
     }
   ],
   "require": {
-    "boooklet/tester": "dev-master"
+    "booklet/tester": "dev-master"
   },
   "autoload": {
     "classmap": [
